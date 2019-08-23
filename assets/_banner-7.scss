@@ -1,0 +1,30 @@
+.shb-banner-7 {
+  .shb-slides {
+    .shb-slide {
+      @include banner-poportion-after(34.9%);
+
+      > a {
+        @include banner-proportion-figure(0px);
+      }
+    }
+  }
+
+  .shb-blankslate-banner {
+    @include banner-poportion-after(34.9%);
+
+    figure {
+      @include banner-proportion-figure(0px);
+    }
+  }
+
+  figure {
+    @extend %shb-banner-figure;
+    @extend %shb-overflow-banner;
+    figcaption {
+      @extend %shb-banner-figcaption;
+    }
+  }
+  .shb-slider-wrapper {
+    @extend %shb-slider-wrapper;
+  }
+}

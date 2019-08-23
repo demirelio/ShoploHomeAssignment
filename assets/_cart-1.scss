@@ -1,0 +1,74 @@
+.shb-cart-1 {
+  margin: $elementMargin;
+
+  p {
+    margin: 0;
+  }
+
+  .shb-cart-header {
+    @extend %shb-cart-header;
+
+    .shb-cart-free-shipping-info-wrapper {
+      background-color: $color-athens-gray;
+      padding: 0 rem-calc(10);
+      border-radius: 2px;
+
+      p {
+        margin: 0;
+        display: inline-block;
+      }
+    }
+
+    @include until($tablet) {
+      text-align: center;
+
+      .align-flex-right {
+        justify-content: center;
+      }
+    }
+  }
+  #cartSummary {
+    @extend %shb-cart-table;
+
+    .shb-cart-item {
+      @extend %shb-cart-item;
+      .shb-item-properties {
+        @extend %clear-list;
+      }
+    }
+
+    .shb-cart-list {
+      @extend %shb-cart-list;
+    }
+
+    .shb-item-actions {
+      width: 100%;
+    }
+  }
+
+  .shb-cart-sum {
+    padding: rem-calc(20) 0 rem-calc(25) 0;
+    border-bottom: 1px solid $cart-item-border;
+    @extend %shb-cart-summary-prices;
+
+    .shb-cart-delivery-price {
+      margin: 0;
+    }
+  }
+
+  #cartActions {
+    margin-top: rem-calc(20);
+  }
+
+  .shb-additional-info {
+    @extend %shb-additional-info;
+  }
+
+  .shb-return {
+    @extend %shb-return-link;
+  }
+
+  .shb-empty-cart {
+    @extend %shb-empty-cart;
+  }
+}

@@ -1,0 +1,1687 @@
+/* CAUTION: this file will be overwritten if you edit theme using theme builder */
+
+@function rem-calc($size) {
+  $rem-size: $size / 16;
+  @return #{$rem-size}rem;
+}
+
+// Buttons
+@mixin button-size($padding-vertical, $padding-horizontal, $font-size, $line-height, $border-radius) {
+  padding-top: $padding-vertical;
+  padding-bottom: $padding-vertical;
+  padding-left: $padding-horizontal;
+  padding-right: $padding-horizontal;
+  font-size: $font-size;
+  line-height: $line-height;
+  border-radius: $border-radius;
+}
+
+@mixin button-variant($color: null, $background: null, $border: null, $hover-color:$color, $hover-background: $background, $hover-border:$border, $disabled-color:$color, $disabled-background: $background, $disabled-border:$border, $active-color:$color, $active-background: $background, $active-border:$border, $box-shadow: true, $letter-spacing: normal, $font-weight: normal) {
+  color: $color;
+  background-color: $background;
+  letter-spacing: $letter-spacing;
+  font-weight: $font-weight;
+
+  @if $box-shadow == 'true' and $background != $color-white and $background != transparent {
+    box-shadow: inset 0 -1px 1px 0 rgba(0,0,0,0.1), inset 0px 0px 0px 1px $border;
+  } @else {
+    border: 1px solid $border;
+  }
+  &:hover, &.hover{
+    color: $hover-color;
+    background-color: $hover-background;
+    border-color: $hover-border;
+    @if $box-shadow == 'true' and $hover-background != $color-white and $hover-background != transparent {
+      box-shadow: inset 0 -1px 1px 0 rgba(0,0,0,0.1), inset 0px 0px 0px 1px $hover-border;
+    } @else {
+      border: 1px solid $hover-border;
+    }
+    i {
+      color: $hover-color;
+    }
+  }
+
+  &:active, &.active {
+    color: $active-color;
+    background-color: $active-background;
+    border-color: $active-border;
+    outline: none;
+    @if $box-shadow == 'true' and $active-background != $color-white and $active-background != transparent {
+      box-shadow: inset 0 -1px 1px 0 rgba(0,0,0,0.1), inset 0px 0px 0px 1px $active-border;
+    } @else {
+      border: 1px solid $active-border;
+    }
+
+    i {
+      color: $active-color;
+    }
+  }
+
+  &:disabled, &.disabled {
+    color: $disabled-color;
+    background-color: $disabled-background;
+    border-color: $disabled-border;
+    @if $box-shadow == 'true' and $disabled-background != $color-white and $disabled-background != transparent {
+      box-shadow: inset 0 -1px 1px 0 rgba(0,0,0,0.1), inset 0px 0px 0px 1px $disabled-border;
+    } @else {
+      border: 1px solid $disabled-border;
+    }
+
+    i {
+      color: $disabled-color;
+    }
+  }
+}
+
+@mixin button-base() {
+  @include transition(color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, border 0.2s ease, opacity 0.2s ease);
+  border: none;
+  cursor: pointer;
+  outline: none;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-appearance: none;
+  text-align: center;
+  vertical-align: middle;
+
+  &:hover, &.hover, &:active, &.active, &:disabled, &.disabled {
+    outline: none;
+    opacity: .85;
+  }
+
+  &:disabled, &.disabled {
+    cursor: not-allowed;
+  }
+}
+
+@mixin button-colors($value) {
+  @each $name, $params in $value {
+    .shb-btn-#{$name} {
+      @include button-variant(#{nth($params, 1)}, #{nth($params, 2)}, #{nth($params, 3)}, #{nth($params, 4)}, #{nth($params, 5)}, #{nth($params, 6)}, #{nth($params, 7)}, #{nth($params, 8)}, #{nth($params, 9)}, #{nth($params, 10)}, #{nth($params, 11)}, #{nth($params, 12)}, #{nth($params, 13)}, #{nth($params, 14)}, #{nth($params, 15)});
+    }
+  }
+}
+
+@mixin button-sizes($value) {
+  @each $name, $params in $value {
+    .shb-btn-#{$name} {
+      @include button-size(#{nth($params, 1)}, #{nth($params, 2)}, #{nth($params, 3)}, #{nth($params, 4)}, #{nth($params, 5)});
+    }
+  }
+}
+
+// Banners
+@mixin banner-height($sm: null, $md: null, $lg: null, $setMobileMaxWidth: false) {
+  @if ($sm) {
+    height: $sm;
+  }
+  @if ($md) {
+    @include from($tablet) {
+      height: $md;
+    }
+  }
+  @if ($lg) {
+    @include from($desktop) {
+      height: $lg;
+    }
+  }
+  @if ($setMobileMaxWidth == true) {
+    @include until($tablet) {
+      max-width: 425px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}
+
+@mixin banner-figcaption-size($headerLarge: 48, $descriptionLarge: 32, $headerSmall: 32, $descriptionSmall: 16, $headerMobile: 24, $descriptionMobile: 12) {
+  $headerLarge: rem-calc($headerLarge);
+  $descriptionLarge: rem-calc($descriptionLarge);
+  $headerSmall: rem-calc($headerSmall);
+  $descriptionSmall: rem-calc($descriptionSmall);
+  $headerMobile: rem-calc($headerMobile);
+  $descriptionMobile: rem-calc($descriptionMobile);
+  &.shb-text-large, &.shb-text-small {
+    .shb-slider-header {
+      font-size: $headerMobile;
+    }
+    .shb-slider-description {
+      font-size: $descriptionMobile;
+    }
+  }
+  @include from($tablet) {
+    &.shb-text-large {
+      .shb-slider-header {
+        font-size: $headerLarge;
+      }
+      .shb-slider-description {
+        font-size: $descriptionLarge;
+      }
+
+    }
+    &.shb-text-small {
+      .shb-slider-header {
+        font-size: $headerSmall;
+      }
+      .shb-slider-description {
+        font-size: $descriptionSmall;
+      }
+    }
+  }
+}
+
+@mixin banner-poportion-after($percentage: 100%) {
+  position: relative;
+  &:after {
+    content: '';
+    display: block;
+    padding-bottom: $percentage;
+  }
+}
+
+@mixin banner-proportion-figure($figPadding: $gap) {
+  position: absolute;
+  height: calc(100% - #{$figPadding} * 2);
+  width: calc(100% - #{$figPadding} * 2);
+}
+
+// Labels
+
+@mixin label($size, $color, $background, $padding-vertical: 7px, $padding-horizontal: 3px) {
+  background: $background;
+  border-radius: 2px;
+  color: $color;
+  display: block;
+  font-size: $size;
+  letter-spacing: .1px;
+  line-height: rem-calc(14);
+  padding: $padding-horizontal $padding-vertical;
+  text-align: center;
+  text-transform: uppercase;
+  @include until($tablet) {
+    line-height: rem-calc(18);
+    padding: $padding-horizontal $padding-vertical;
+
+  }
+}
+
+
+// Variable settings for /addons/prefixer.scss
+$prefix-for-webkit:    true !default;
+$prefix-for-mozilla:   true !default;
+$prefix-for-microsoft: true !default;
+$prefix-for-opera:     true !default;
+$prefix-for-spec:      true !default; // required for keyframe mixin
+
+//************************************************************************//
+// Example: @include prefixer(border-radius, $radii, webkit ms spec);
+//************************************************************************//
+// Variables located in /settings/_prefixer.scss
+
+@mixin prefixer ($property, $value, $prefixes) {
+  @each $prefix in $prefixes {
+    @if $prefix == webkit {
+      @if $prefix-for-webkit {
+        -webkit-#{$property}: $value;
+      }
+    }
+    @else if $prefix == moz {
+      @if $prefix-for-mozilla {
+        -moz-#{$property}: $value;
+      }
+    }
+    @else if $prefix == ms {
+      @if $prefix-for-microsoft {
+        -ms-#{$property}: $value;
+      }
+    }
+    @else if $prefix == o {
+      @if $prefix-for-opera {
+        -o-#{$property}: $value;
+      }
+    }
+    @else if $prefix == spec {
+      @if $prefix-for-spec {
+        #{$property}: $value;
+      }
+    }
+    @else  {
+      @warn "Unrecognized prefix: #{$prefix}";
+    }
+  }
+}
+
+@mixin disable-prefix-for-all() {
+  $prefix-for-webkit:    false !global;
+  $prefix-for-mozilla:   false !global;
+  $prefix-for-microsoft: false !global;
+  $prefix-for-opera:     false !global;
+  $prefix-for-spec:      false !global;
+}
+
+@mixin transform($property: none) {
+  //  none | <transform-function>
+  @include prefixer(transform, $property, webkit moz ms o spec);
+}
+
+@mixin transform-origin($axes: 50%) {
+  // x-axis - left | center | right  | length | %
+  // y-axis - top  | center | bottom | length | %
+  // z-axis -                          length
+  @include prefixer(transform-origin, $axes, webkit moz ms o spec);
+}
+
+@mixin transform-style ($style: flat) {
+  @include prefixer(transform-style, $style, webkit moz ms o spec);
+}
+
+// Shorthand mixin. Supports multiple parentheses-deliminated values for each variable.
+// Example: @include transition (all 2s ease-in-out);
+//          @include transition (opacity 1s ease-in 2s, width 2s ease-out);
+//          @include transition-property (transform, opacity);
+
+@mixin transition ($properties...) {
+  // Fix for vendor-prefix transform property
+  $needs-prefixes: false;
+  $webkit: ();
+  $moz: ();
+  $spec: ();
+
+  // Create lists for vendor-prefixed transform
+  @each $list in $properties {
+    @if nth($list, 1) == "transform" {
+      $needs-prefixes: true;
+      $list1: -webkit-transform;
+      $list2: -moz-transform;
+      $list3: ();
+
+      @each $var in $list {
+        $list3: join($list3, $var);
+
+        @if $var != "transform" {
+          $list1: join($list1, $var);
+          $list2: join($list2, $var);
+        }
+      }
+
+      $webkit: append($webkit, $list1);
+      $moz: append($moz,    $list2);
+      $spec: append($spec,   $list3);
+    }
+
+      // Create lists for non-prefixed transition properties
+    @else {
+      $webkit:  append($webkit, $list, comma);
+      $moz:     append($moz,    $list, comma);
+      $spec:    append($spec,   $list, comma);
+    }
+  }
+
+  @if $needs-prefixes {
+    -webkit-transition: $webkit;
+    -moz-transition: $moz;
+    transition: $spec;
+  }
+  @else {
+    @if length($properties) >= 1 {
+      @include prefixer(transition, $properties, webkit moz spec);
+    }
+
+    @else {
+      $properties: all 0.15s ease-out 0s;
+      @include prefixer(transition, $properties, webkit moz spec);
+    }
+  }
+}
+
+@mixin transition-property ($properties...) {
+  -webkit-transition-property: transition-property-names($properties, 'webkit');
+  -moz-transition-property: transition-property-names($properties, 'moz');
+  transition-property: transition-property-names($properties, false);
+}
+
+@mixin transition-duration ($times...) {
+  @include prefixer(transition-duration, $times, webkit moz spec);
+}
+
+@mixin transition-timing-function ($motions...) {
+  // ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier()
+  @include prefixer(transition-timing-function, $motions, webkit moz spec);
+}
+
+@mixin transition-delay ($times...) {
+  @include prefixer(transition-delay, $times, webkit moz spec);
+}
+
+
+$variable-columns: true !default;
+
+
+// Colors
+
+$black:        hsl(0, 0%, 4%) !default;
+$black-bis:    hsl(0, 0%, 7%) !default;
+$black-ter:    hsl(0, 0%, 14%) !default;
+
+$grey-darker:  hsl(0, 0%, 21%) !default;
+$grey-dark:    hsl(0, 0%, 29%) !default;
+$grey:         hsl(0, 0%, 48%) !default;
+$grey-light:   hsl(0, 0%, 71%) !default;
+$grey-lighter: hsl(0, 0%, 86%) !default;
+
+$white-ter:    hsl(0, 0%, 96%) !default;
+$white-bis:    hsl(0, 0%, 98%) !default;
+$white:        hsl(0, 0%, 100%) !default;;
+
+$orange:       hsl(14,  100%, 53%) !default;
+$yellow:       hsl(48,  100%, 67%) !default;
+$green:        hsl(141, 71%,  48%) !default;
+$turquoise:    hsl(171, 100%, 41%) !default;
+$cyan:         hsl(204, 86%,  53%) !default;
+$blue:         hsl(217, 71%,  53%) !default;
+$purple:       hsl(271, 100%, 71%) !default;
+$red:          hsl(348, 100%, 61%) !default;
+
+// Typography
+
+$family-sans-serif: "Lato", sans-serif !default;
+$family-monospace: monospace !default;
+$render-mode: optimizeLegibility !default;
+
+$size-1: 3rem !default;
+$size-2: 2.5rem !default;
+$size-3: 2rem !default;
+$size-4: 1.5rem !default;
+$size-5: 1.25rem !default;
+$size-6: 1rem !default;
+$size-7: 0.75rem !default;
+
+$weight-light: 300 !default;
+$weight-normal: 400 !default;
+$weight-medium: 500 !default;
+$weight-semibold: 600 !default;
+$weight-bold: 700 !default;
+
+// Responsiveness
+
+// The container horizontal gap, which acts as the offset for breakpoints
+$gap: 10px !default;
+// 960, 1152, and 1344 have been chosen because they are divisible by both 12 and 16
+$tablet: 769px !default;
+// 960px container + 4rem
+$desktop: 1000px + (2 * $gap) !default;
+// 1152px container + 4rem
+$widescreen: 1152px + (2 * $gap) !default;
+$widescreen-enabled: false !default;
+// 1344px container + 4rem
+$fullhd: 1344px + (2 * $gap) !default;
+$fullhd-enabled: false !default;
+
+// Miscellaneous
+
+$easing: ease-out !default;
+$radius-small: 2px !default;
+$radius: 4px !default;
+$radius-large: 6px !default;
+$radius-rounded: 290486px !default;
+$speed: 86ms !default;
+
+// Flags
+
+$variable-columns: true !default;
+$column-gap: rem-calc(10);
+
+
+
+
+$breadcrumb-item-padding-vertical: 0 !default;
+$breadcrumb-item-padding-horizontal: 0.75em !default;
+
+$elementMargin: rem-calc(30) 0;
+$globalElementsBorderRadius: 2px;
+
+
+$font-family-base: 'Lato', Helvetica, Arial, sans-serif;
+@if variable-exists(set__font_default) {
+  $font-family-base: $set__font_default;
+}
+
+$font-family-headings: 'Lato', Helvetica, Arial, sans-serif;
+@if variable-exists(set__font_headers) {
+  $font-family-headings: $set__font_headers;
+}
+
+$font-size-x-large: rem-calc(38);
+$font-size-large: rem-calc(30);
+$font-size-medium: rem-calc(20);
+$font-size-base: rem-calc(16);
+$font-size-normal: rem-calc(14);
+$font-size-small: rem-calc(12);
+$font-size-x-small: rem-calc(10);
+@if variable-exists(set__font_size_default) {
+  $font-size-base: $set__font_size_default;
+}
+
+// Buttons
+$btn-font-size: $font-size-normal;
+$btn-line-height: $font-size-base;
+$btn-small-font-size: $font-size-small;
+$btn-large-font-size: $font-size-base;
+$btn-small-line-height: $font-size-normal;
+$btn-large-line-height: rem-calc(24);
+$btn-letter-spacing: rem-calc(0.157);
+
+// Labels
+
+$label-font-size: $font-size-small;
+
+// Header
+$header-navbar-link-size: $font-size-normal;
+$header-icon-size: $font-size-medium;
+$header-logo-size: $font-size-medium;
+$header-right-size: $font-size-small;
+$header-info-bar-size: $font-size-normal;
+
+// Social links
+$social-links-size: rem-calc(20);
+
+// Footer
+$footer-logo-size: rem-calc(20);
+$footer-menu-label-size: $font-size-small;
+$footer-menu-link: $font-size-small;
+$footer-copyrights-size: $font-size-small;
+
+// Product page
+$product-page-title-size: $font-size-x-large;
+$product-page-vendor-name-size: $font-size-small;
+$product-page-price-size: rem-calc(24);
+$product-page-description-size: $font-size-base;
+$product-page-shipping-size: $font-size-small;
+$product-page-wishlist-size: $font-size-small;
+$product-page-reviews-size: $font-size-small;
+$product-page-sold-out: $font-size-medium;
+
+// Product list
+$product-list-header-title-size: $font-size-large;
+$product-list-header-description-size: $font-size-small;
+$product-list-tile-size: $font-size-base;
+$product-list-price-size: $font-size-small;
+
+// Sidebar
+$sidebar-heading-size: $font-size-small;
+$sidebar-list-item-size: $font-size-small;
+$sidebar-filters-header-size: $font-size-small;
+$sidebar-filters-options-size: $font-size-small;
+
+// Breadcrumbs
+$breadcrumbs-item-size: $font-size-small;
+
+// Tabs
+$tabs-link-size: $font-size-small;
+
+// Variatns
+$variants-option-label-size: $font-size-small;
+$variants-option-small: rem-calc(11);
+$variants-option-large: $font-size-small;
+
+// Separator
+$header-size: $font-size-large;
+$description-size: $font-size-base;
+
+
+// Categories menu inline (product list view 2)
+$categories-menu-size: $font-size-small;
+$clear-all-filters-size: $font-size-small;
+
+$charcoal-grey: #2c3238;
+$battleship-grey: #6f7982;
+$cool-grey: #b1b6bb;
+$color-mercury: #e5e5e5;
+$color-athens-gray: #e4e7eb;
+$color-alabaster: #f7f7f7;
+$color-alto: #d7d7d7;
+$color-white: #fff;
+$color-black: #000;
+$color-red: #e24a4a;
+
+
+// Base
+$global-links-color: $charcoal-grey;
+@if variable-exists(set__content_link_color) {
+  $global-links-color: $set__content_link_color;
+}
+
+$global-links-hover-color: $color-black;
+@if variable-exists(set__content_link_hover_color) {
+  $global-links-hover-color: $set__content_link_hover_color;
+}
+
+$body-background-color: #ffffff;
+@if variable-exists(set__page_background_color) {
+  $body-background-color: $set__page_background_color;
+}
+
+$body-background-image-repeat: 'no-repeat';
+@if variable-exists(set__bg_image_repeat) {
+  $body-background-image-repeat: $set__bg_image_repeat;
+}
+
+$body-background-image-alignment: 'center';
+@if variable-exists(set__bg_image_alignment) {
+  $body-background-image-alignment: $set__bg_image_alignment;
+}
+
+
+$font-color-base: $charcoal-grey;
+@if variable-exists(set__page_font_color) {
+  $font-color-base: $set__page_font_color;
+}
+
+
+$font-heading-color-base: $charcoal-grey;
+@if variable-exists(set__page_headers_font_color) {
+  $font-heading-color-base: $set__page_headers_font_color;
+}
+
+// Form elements
+$form-element-color-font: $charcoal-grey;
+@if variable-exists(set__form_element_font_color) {
+  $form-element-color-font: $set__form_element_font_color;
+}
+
+$form-element-color-background: $color-white;
+@if variable-exists(set__form_element_background_color) {
+  $form-element-color-background: $set__form_element_background_color;
+}
+
+$form-element-color-border: $color-athens-gray;
+@if variable-exists(set__form_element_border_color) {
+  $form-element-color-border: $set__form_element_border_color;
+}
+
+$form-element-active-color-font: $charcoal-grey;
+@if variable-exists(set__form_element_active_font_color) {
+  $form-element-active-color-font: $set__form_element_active_font_color;
+}
+
+$form-element-active-color: $color-athens-gray;
+@if variable-exists(form_element_active_border_color) {
+  $form-element-active-color: $set__form_element_active_color;
+}
+
+// Buttons
+$btn-light-color: $charcoal-grey;
+@if variable-exists(set__light_button_text_color) {
+  $btn-light-color: $set__light_button_text_color;
+}
+
+$btn-light-background: $color-white;
+@if variable-exists(set__light_button_background) {
+  $btn-light-background: $set__light_button_background;
+}
+
+$btn-light-border: $charcoal-grey;
+@if variable-exists(set__light_button_border) {
+  $btn-light-border: $set__light_button_border;
+}
+
+$btn-light-active-color: $color-white;
+@if variable-exists(set__light_button_active_text_color) {
+  $btn-light-active-color: $set__light_button_active_text_color;
+}
+
+$btn-light-active-background: $charcoal-grey;
+@if variable-exists(set__light_button_active_background) {
+  $btn-light-active-background: $set__light_button_active_background;
+}
+
+$btn-light-active-border: $charcoal-grey;
+@if variable-exists(set__light_button_active_border) {
+  $btn-light-active-border: $set__light_button_active_border;
+}
+
+$btn-dark-color: $color-white;
+@if variable-exists(set__dark_button_text_color) {
+  $btn-dark-color: $set__dark_button_text_color;
+}
+
+$btn-dark-background: $charcoal-grey;
+@if variable-exists(set__dark_button_background) {
+  $btn-dark-background: $set__dark_button_background;
+}
+
+$btn-dark-border: $charcoal-grey;
+@if variable-exists(set__dark_button_border) {
+  $btn-dark-border: $set__dark_button_border;
+}
+
+$btn-dark-active-color: $charcoal-grey;
+@if variable-exists(set__dark_button_active_text_color) {
+  $btn-dark-active-color: $set__dark_button_active_text_color;
+}
+
+$btn-dark-active-background: $color-white;
+@if variable-exists(set__dark_button_active_background) {
+  $btn-dark-active-background: $set__dark_button_active_background;
+}
+
+$btn-dark-active-border: $charcoal-grey;
+@if variable-exists(set__dark_button_active_border) {
+  $btn-dark-active-border: $set__dark_button_active_border;
+}
+
+$btn-disabled-color: $color-alto;
+$btn-disabled-background-color: $color-alabaster;
+$btn-disabled-border-color: $color-alto;
+
+// Labels
+$label-color: $color-white;
+$label-black-background: $charcoal-grey;
+
+$label-sell-background: #4a90e2;
+@if variable-exists(set__promotion__label__color) {
+  $label-sell-background: $set__promotion__label__color;
+}
+
+$label-sold-background: #f5a623;
+@if variable-exists(set__sold__out__label__color) {
+  $label-sold-background: $set__sold__out__label__color;
+}
+
+// Header
+$header-border-color: $color-athens-gray;
+@if variable-exists(set__navbar__border__color) {
+  $header-border-color: $set__navbar__border__color;
+}
+
+$header-background: $color-white;
+$header-links-color: $charcoal-grey;
+@if variable-exists(set__header__color) {
+  $header-links-color: $set__header__color;
+}
+
+$header-without-image-links-color: $charcoal-grey;
+@if variable-exists(set__header__without__image__color) {
+  $header-without-image-links-color: $set__header__without__image__color;
+}
+
+$header-background-secondary: $charcoal-grey;
+@if variable-exists(set__header__background__secondary) {
+  $header-background-secondary: $set__header__background__secondary;
+}
+
+$header-links-color-secondary: $color-white;
+@if variable-exists(set__header__links__color__secondary) {
+  $header-links-color-secondary: $set__header__links__color__secondary;
+}
+
+$header-navbar-background: $charcoal-grey;
+@if variable-exists(set__navbar__background__color) {
+  $header-navbar-background: $set__navbar__background__color;
+}
+
+$header-navbar-links-color: $color-white;
+@if variable-exists(set__navbar__color) {
+  $header-navbar-links-color: $set__navbar__color;
+}
+
+$header-navbar-light-background: $color-white;
+@if variable-exists(set__navbar__background__color) {
+  $header-navbar-light-background: $set__navbar__background__color;
+}
+
+$header-navbar-light-links-color: $charcoal-grey;
+@if variable-exists(set__navbar__color) {
+  $header-navbar-light-links-color: $set__navbar__color;
+}
+
+$header-info-bar-color: $color-white;
+$header-info-bar-links-color: $color-white;
+@if variable-exists(set__info__bar__color) {
+  $header-info-bar-color: $set__info__bar__color;
+  $header-info-bar-links-color: $set__info__bar__color;
+}
+
+$header-info-bar-background: $color-black;
+@if variable-exists(set__info__bar__background) {
+  $header-info-bar-background: $set__info__bar__background;
+}
+
+$cart-widget-total-background: $color-white;
+@if variable-exists(set__page_background_color) {
+  $cart-widget-total-background: $set__page_background_color;
+}
+
+
+
+// Footer
+$footer-background: $color-white;
+@if variable-exists(set__footer__background__color) {
+  $footer-background: $set__footer__background__color;
+}
+
+$footer-logo-color: $battleship-grey;
+@if variable-exists(set__footer__logo__color) {
+  $footer-logo-color: $set__footer__logo__color;
+}
+$footer-logo-hover-color: $battleship-grey;
+@if variable-exists(set__footer__logo__hover__color) {
+  $footer-logo-hover-color: $set__footer__logo__hover__color;
+}
+$footer-logo-light-color:  $color-white;
+@if variable-exists(set__footer__logo__light__color) {
+  $footer-logo-light-color: $set__footer__logo__light__color;
+}
+$footer-logo-hover-light-color: $battleship-grey;
+@if variable-exists(set__footer__logo__hover__light__color) {
+  $footer-logo-hover-light-color: $set__footer__logo__hover__light__color;
+}
+$footer-menu-label-color: $battleship-grey;
+@if variable-exists(set__footer__menu__label__color) {
+  $footer-menu-label-color: $set__footer__menu__label__color;
+}
+$footer-menu-label-light-color: $color-white;
+@if variable-exists(set__footer__menu__label__light__color) {
+  $footer-menu-label-light-color: $set__footer__menu__label__light__color;
+}
+
+
+$footer-menu-links-color: $battleship-grey;
+@if variable-exists(set__footer__menu__links__color) {
+  $footer-menu-links-color: $set__footer__menu__links__color;
+}
+$footer-menu-links-hover-color: $battleship-grey;
+@if variable-exists(set__footer__menu__links__hover__color) {
+  $footer-menu-links-hover-color: $set__footer__menu__links__hover__color;
+}
+$footer-menu-links-light-color: $color-white;
+@if variable-exists(set__footer__menu__links__light__color) {
+  $footer-menu-links-light-color: $set__footer__menu__links__light__color;
+}
+$footer-menu-links-hover-light-color: $battleship-grey;
+@if variable-exists(set__footer__menu__links__hover__light__color) {
+  $footer-menu-links-hover-light-color: $set__footer__menu__links__hover__light__color;
+}
+$footer-copyrights-color: $battleship-grey;
+@if variable-exists(set__footer__copyrights__color) {
+  $footer-copyrights-color: $set__footer__copyrights__color;
+}
+$footer-copyrights-links-color: $battleship-grey;
+@if variable-exists(set__footer__copyrights__link__color) {
+  $footer-copyrights-links-color: $set__footer__copyrights__link__color;
+}
+$footer-copyrights-links-hover-color: $battleship-grey;
+@if variable-exists(set__footer__copyrights__links__hover__color) {
+  $footer-copyrights-links-hover-color: $set__footer__copyrights__links__hover__color;
+}
+$footer-copyrights-light-color: $color-white;
+@if variable-exists(set__footer__copyrights__light__color) {
+  $footer-copyrights-light-color: $set__footer__copyrights__light__color;
+}
+$footer-copyrights-links-light-color: $color-white;
+@if variable-exists(set__footer__copyrights__links__light__color) {
+  $footer-copyrights-links-light-color: $set__footer__copyrights__links__light__color;
+}
+$footer-copyrights-links-hover-light-color: $battleship-grey;
+@if variable-exists(set__footer__copyrights__links__hover__light__color) {
+  $footer-copyrights-links-hover-light-color: $set__footer__copyrights__links__hover__light__color;
+}
+
+// Social links
+$social-links-color: $charcoal-grey;
+@if variable-exists(set__footer__social__links__color) {
+  $social-links-color: $set__footer__social__links__color;
+}
+$social-links-hover-color: $battleship-grey;
+@if variable-exists(set__footer__social__links__hover__color) {
+  $social-links-hover-color: $set__footer__social__links__hover__color;
+}
+$social-links-light-color: $color-white;
+@if variable-exists(set__footer__social__links__light__color) {
+  $social-links-light-color: $set__footer__social__links__light__color;
+}
+$social-links-hover-light-color: $battleship-grey;
+@if variable-exists(set__footer__social__links__hover__light__color) {
+  $social-links-hover-light-color: $set__footer__social__links__hover__light__color;
+}
+
+//@if variable-exists(footer_color) {
+//  $footer-copyrights-color: $footer_color;
+//  $footer-logo-color: $footer_color;
+//  $footer-menu-label-color: $footer_color;
+//  $footer-menu-links-color: $footer_color;
+//  $footer-copyrights-links-color: $footer_color;
+//}
+
+// Banner
+$blankslate-banner-background: $color-alabaster;
+$blankslate-banner-icon-color: $color-alto;
+$blankslate-banner-header-color: $color-black;
+$blankslate-banner-description-color: $battleship-grey;
+
+$banner-slider-arrows-color: $color-black;
+@if variable-exists(set__banner_arrows_color) {
+  $banner-slider-arrows-color: $set__banner_arrows_color;
+}
+
+$banner-slider-dots-color: $color-white;
+@if variable-exists(set__banner_dots_color) {
+  $banner-slider-dots-color: $set__banner_dots_color;
+}
+
+// Product colors
+
+$product-color-price: $battleship-grey;
+@if variable-exists(set__product_price_color) {
+  $product-color-price: $set__product_price_color;
+}
+
+$product-color-price-old: #ced3d7;
+@if variable-exists(set__product_old_price_color) {
+  $product-color-price-old: $set__product_old_price_color;
+}
+
+
+// Product page
+$product-page-title-color: $font-heading-color-base;
+$product-page-vendor-name-color: $font-color-base;
+$product-page-price-color: $product-color-price;
+$product-page-description-color: $font-color-base;
+$product-page-shipping-color: $font-color-base;
+$product-page-wishlist-color: $font-color-base;
+$product-page-reviews-color: $font-color-base;
+$product-page-social-color: $font-color-base;
+$product-page-variant-border: $color-athens-gray;
+$product-page-sold-out-btn-background: $color-athens-gray;
+$product-page-sold-out-btn-color: $charcoal-grey;
+$photoswipe-bg-color: #000000;
+$photoswipe-icons-color: #fff;
+$product-page-thumbs-arrows-color: #000000;
+$product-variant-fill-color: #ffffff;
+
+
+@if variable-exists(set__lightbox_background) {
+  $photoswipe-bg-color: $set__lightbox_background;
+}
+
+@if variable-exists(set__lightbox_icons_color) {
+  $photoswipe-icons-color: $set__lightbox_icons_color;
+}
+@if variable-exists(set__page_background_color) {
+  $product-variant-fill-color: $set__page_background_color;
+}
+
+@if variable-exists(set__thumbs_carousel_arrows_color) {
+  $product-page-thumbs-arrows-color: $set__thumbs_carousel_arrows_color;
+}
+
+@if variable-exists(set__actions_border_color) {
+  $product-page-variant-border: $set__actions_border_color;
+}
+
+
+
+// Product list
+$product-list-title-color: $charcoal-grey;
+$product-list-price-color: $charcoal-grey;
+$product-list-old-price-color: $product-color-price-old;
+
+// Sidebar
+$sidebar-heading-color: $font-color-base;
+$sidebar-list-item-color: $font-color-base;
+$sidebar-filters-header-color: $font-color-base;
+$sidebar-filters-color: $font-color-base;
+$sidebar-filters-active-color: $font-color-base;
+$sidebar-filters-colors-border-color: $color-athens-gray;
+$sidebar-filters-colors-active-border-color: $charcoal-grey;
+
+// Separator
+$separator-color: $charcoal-grey;
+@if variable-exists(set__text_header_color) {
+  $separator-color: $set__text_header_color;
+}
+
+$separator-line-color: $color-athens-gray;
+@if variable-exists(set__separator__line__color) {
+  $separator-line-color: $set__separator__line__color;
+}
+
+// Breadcrumbs
+$breadcrumb-item-color: $cool-grey !default;
+$breadcrumb-item-hover-color: $battleship-grey !default;
+$breadcrumb-item-active-color: $cool-grey !default;
+$breadcrumb-item-separator-color: $cool-grey !default;
+
+// Tabs
+$tabs-link-color: $cool-grey !default;
+$tabs-link-hover-color: $battleship-grey !default;
+$tabs-link-active-border-bottom-color: $battleship-grey !default;
+$tabs-link-active-color: $battleship-grey !default;
+$tabs-border-color: $color-athens-gray !default;
+
+@if variable-exists(set__tabs__link__color) {
+  $tabs-link-color: $set__tabs__link__color;
+}
+
+@if variable-exists(set__tabs__active__link__color) {
+  $tabs-link-hover-color: $set__tabs__active__link__color;
+  $tabs-link-active-color: $set__tabs__active__link__color;
+  $tabs-link-active-border-bottom-color: $set__tabs__active__link__color;
+}
+
+@if variable-exists(set__tabs__border__color) {
+  $tabs-border-color: $set__tabs__border__color;
+}
+
+// Variants
+$variants-option-label-color: $charcoal-grey;
+$variants-option-border-color: $color-athens-gray;
+$variants-option-active-border-color: $charcoal-grey;
+$variants-option-active-background-color: $charcoal-grey;
+$variants-option-active-color: '#FFFFFF';
+@if variable-exists(set__variants_option_active_border_color) {
+  $variants-option-active-border-color: $set__variants_option_active_border_color;
+}
+
+@if variable-exists(set__page_background_color) {
+  $variants-option-active-color: $set__page_background_color;
+}
+// Blog
+$blankslate-article-image: $color-alabaster;
+$blankslate-article-image-color: $color-alto;
+
+// Newlestter
+$newsletter-background: $charcoal-grey;
+@if variable-exists(set__newsletter__background__color) {
+  $newsletter-background: $set__newsletter__background__color;
+}
+
+$newsletter-light-color: $color-white;
+@if variable-exists(set__newsletter__text__color) {
+  $newsletter-light-color: $set__newsletter__text__color;
+}
+
+$newsletter-with-background-color: $color-white;
+@if variable-exists(set__newsletter__with__background__text__color) {
+  $newsletter-with-background-color: $set__newsletter__with__background__text__color;
+}
+
+
+// Cart widget
+$cart-widget-border: $color-athens-gray;
+$cart-widget-backgorund: $color-white;
+@if variable-exists(set__cart_widget_background_color) {
+  $cart-widget-backgorund: $set__cart_widget_background_color;
+}
+
+$cart-widget-color: $charcoal-grey;
+@if variable-exists(set__cart_widget_text_color) {
+  $cart-widget-color: $set__cart_widget_text_color;
+}
+
+$cart-widget-secondary-color: $battleship-grey;
+@if variable-exists(set__cart_widget_text_secondary_color) {
+  $cart-widget-secondary-color: $set__cart_widget_text_secondary_color;
+}
+
+// Cart
+$cart-item-border: $color-athens-gray;
+
+// Notification
+$notification-success-background: green;
+$notification-error-background: $color-red;
+$notification-color: $color-white;
+
+// Search widget
+$search-widget-autocompleter-header-border: $color-athens-gray;
+$search-widget-autocompleter-item-border: $color-alabaster;
+$search-widget-background: $color-white;
+@if variable-exists(set__search__widget__background) {
+  $search-widget-background: $set__search__widget__background;
+}
+
+$search-widget-color: $charcoal-grey;
+@if variable-exists(set__search_widget_text_color) {
+  $search-widget-color: $set__search_widget_text_color;
+}
+
+$search-widget-secondary-color: $battleship-grey;
+@if variable-exists(set__search_widget_text_secondary_color) {
+  $search-widget-secondary-color: $set__search_widget_text_secondary_color;
+}
+
+// Categories menu inline (product list view 2)
+$categories-menu-color: $charcoal-grey;
+$categories-menu-hover-color: $battleship-grey;
+$categories-menu-active-color: $charcoal-grey;
+
+// List view 3
+$list-view-3-filters-border-color: $color-athens-gray;
+$clear-all-filters-color: $charcoal-grey;
+$clear-all-filters-hover-color: $battleship-grey;
+
+
+// Colors
+
+$black: hsl(0, 0%, 4%) !default;
+$black-bis: hsl(0, 0%, 7%) !default;
+$black-ter: hsl(0, 0%, 14%) !default;
+
+$grey-darker: hsl(0, 0%, 21%) !default;
+$grey-dark: hsl(0, 0%, 29%) !default;
+$grey: hsl(0, 0%, 48%) !default;
+$grey-light: hsl(0, 0%, 71%) !default;
+$grey-lighter: hsl(0, 0%, 86%) !default;
+
+$white-ter: hsl(0, 0%, 96%) !default;
+$white-bis: hsl(0, 0%, 98%) !default;
+$white: hsl(0, 0%, 100%) !default;
+
+$orange: hsl(14, 100%, 53%) !default;
+$yellow: hsl(48, 100%, 67%) !default;
+$green: hsl(141, 71%, 48%) !default;
+$turquoise: hsl(171, 100%, 41%) !default;
+$cyan: hsl(204, 86%, 53%) !default;
+$blue: hsl(217, 71%, 53%) !default;
+$purple: hsl(271, 100%, 71%) !default;
+$red: hsl(348, 100%, 61%) !default;
+
+// Typography
+
+$family-sans-serif: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif !default;
+$family-monospace: monospace !default;
+$render-mode: optimizeLegibility !default;
+
+$size-1: 3rem !default;
+$size-2: 2.5rem !default;
+$size-3: 2rem !default;
+$size-4: 1.5rem !default;
+$size-5: 1.25rem !default;
+$size-6: 1rem !default;
+$size-7: 0.75rem !default;
+
+$weight-light: 300 !default;
+$weight-normal: 400 !default;
+$weight-medium: 500 !default;
+$weight-semibold: 600 !default;
+$weight-bold: 700 !default;
+
+// Responsiveness
+
+// The container horizontal gap, which acts as the offset for breakpoints
+$gap: 64px !default;
+
+// 960, 1152, and 1344 have been chosen because they are divisible by both 12 and 16
+$tablet: 769px !default;
+
+// 960px container + 4rem
+$desktop: 960px + 2 * $gap !default;
+
+// 1152px container + 4rem
+$widescreen: 1152px + 2 * $gap !default;
+$widescreen-enabled: true !default;
+
+// 1344px container + 4rem
+$fullhd: 1344px + 2 * $gap !default;
+$fullhd-enabled: true !default;
+
+// Miscellaneous
+
+$easing: ease-out !default;
+$radius-small: 2px !default;
+$radius: 4px !default;
+$radius-large: 6px !default;
+$radius-rounded: 290486px !default;
+$speed: 86ms !default;
+
+// Flags
+
+$variable-columns: true !default;
+
+
+@function mergeColorMaps($bulma-colors, $custom-colors) {
+  // we return at least bulma hardcoded colors
+  $merged-colors: $bulma-colors;
+
+  // we want a map as input
+  @if type-of($custom-colors) == "map" {
+    @each $name, $components in $custom-colors {
+      // color name should be a string and colors pair a list with at least one element
+      @if type-of($name) == "string" and (type-of($components) == "list" or type-of($components) == "color") and length($components) >= 1 {
+        $color-base: null;
+
+        // the param can either be a single color
+        // or a list of 2 colors
+        @if type-of($components) == "color" {
+          $color-base: $components;
+        } @else if type-of($components) == "list" {
+          $color-base: nth($components, 1);
+        }
+
+        $color-invert: null;
+
+        // is an inverted color provided in the list
+        @if length($components) > 1 {
+          $color-invert: nth($components, 2);
+        }
+
+        // we only want a color as base color
+        @if type-of($color-base) == "color" {
+          // if inverted color is not provided or is not a color we compute it
+          @if type-of($color-invert) != "color" {
+            $color-invert: findColorInvert($color-base);
+          }
+
+          // we merge this colors elements as map with bulma colors (we can override them this way, no multiple definition for the same name)
+          $merged-colors: map_merge($merged-colors, ($name: ($color-base, $color-invert)));
+        }
+      }
+    }
+  }
+
+  @return $merged-colors;
+}
+
+@function powerNumber($number, $exp) {
+  $value: 1;
+
+  @if $exp > 0 {
+    @for $i from 1 through $exp {
+      $value: $value * $number;
+    }
+  } @else if $exp < 0 {
+    @for $i from 1 through -$exp {
+      $value: $value / $number;
+    }
+  }
+
+  @return $value;
+}
+
+@function colorLuminance($color) {
+  $color-rgb: ("red": red($color), "green": green($color), "blue": blue($color));
+
+  @each $name, $value in $color-rgb {
+    $adjusted: 0;
+    $value: $value / 255;
+
+    @if $value < 0.03928 {
+      $value: $value / 12.92;
+    } @else {
+      $value: ($value + 0.055) / 1.055;
+      $value: powerNumber($value, 2);
+    }
+
+    $color-rgb: map-merge($color-rgb, ($name: $value));
+  }
+
+  @return map-get($color-rgb, "red") * 0.2126 + map-get($color-rgb, "green") * 0.7152 + map-get($color-rgb, "blue") * 0.0722;
+}
+
+@function findColorInvert($color) {
+  @if colorLuminance($color) > 0.55 {
+    @return rgba(#000, 0.7);
+  } @else {
+    @return #fff;
+  }
+}
+
+
+$primary: $turquoise !default;
+
+$info: $cyan !default;
+$success: $green !default;
+$warning: $yellow !default;
+$danger: $red !default;
+
+$light: $white-ter !default;
+$dark: $grey-darker !default;
+
+// Invert colors
+
+$orange-invert: findColorInvert($orange) !default;
+$yellow-invert: findColorInvert($yellow) !default;
+$green-invert: findColorInvert($green) !default;
+$turquoise-invert: findColorInvert($turquoise) !default;
+$cyan-invert: findColorInvert($cyan) !default;
+$blue-invert: findColorInvert($blue) !default;
+$purple-invert: findColorInvert($purple) !default;
+$red-invert: findColorInvert($red) !default;
+
+$primary-invert: $turquoise-invert !default;
+$info-invert: $cyan-invert !default;
+$success-invert: $green-invert !default;
+$warning-invert: $yellow-invert !default;
+$danger-invert: $red-invert !default;
+$light-invert: $dark !default;
+$dark-invert: $light !default;
+
+// General colors
+
+$background: $white-ter !default;
+
+$border: $grey-lighter !default;
+$border-hover: $grey-light !default;
+
+// Text colors
+
+$text: $grey-dark !default;
+$text-invert: findColorInvert($text) !default;
+$text-light: $grey !default;
+$text-strong: $grey-darker !default;
+
+// Code colors
+
+$code: $red !default;
+$code-background: $background !default;
+
+$pre: $text !default;
+$pre-background: $background !default;
+
+// Link colors
+
+$link: $blue !default;
+$link-invert: $blue-invert !default;
+$link-visited: $purple !default;
+
+$link-hover: $grey-darker !default;
+$link-hover-border: $grey-light !default;
+
+$link-focus: $grey-darker !default;
+$link-focus-border: $blue !default;
+
+$link-active: $grey-darker !default;
+$link-active-border: $grey-dark !default;
+
+// Typography
+
+$family-primary: $family-sans-serif !default;
+$family-code: $family-monospace !default;
+
+$size-small: $size-7 !default;
+$size-normal: $size-6 !default;
+$size-medium: $size-5 !default;
+$size-large: $size-4 !default;
+
+// Lists and maps
+$custom-colors: null !default;
+$custom-shades: null !default;
+
+$colors: mergeColorMaps(("white": ($white, $black), "black": ($black, $white), "light": ($light, $light-invert), "dark": ($dark, $dark-invert), "primary": ($primary, $primary-invert), "link": ($link, $link-invert), "info": ($info, $info-invert), "success": ($success, $success-invert), "warning": ($warning, $warning-invert), "danger": ($danger, $danger-invert)), $custom-colors) !default;
+$shades: mergeColorMaps(("black-bis": $black-bis, "black-ter": $black-ter, "grey-darker": $grey-darker, "grey-dark": $grey-dark, "grey": $grey, "grey-light": $grey-light, "grey-lighter": $grey-lighter, "white-ter": $white-ter, "white-bis": $white-bis), $custom-shades) !default;
+
+$sizes: $size-1 $size-2 $size-3 $size-4 $size-5 $size-6 $size-7 !default;
+
+
+@keyframes spinAround {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+
+@mixin clearfix {
+  &::after {
+    clear: both;
+    content: " ";
+    display: table;
+  }
+}
+
+@mixin center($width, $height: 0) {
+  position: absolute;
+
+  @if $height != 0 {
+    left: calc(50% - (#{$width} / 2));
+    top: calc(50% - (#{$height} / 2));
+  } @else {
+    left: calc(50% - (#{$width} / 2));
+    top: calc(50% - (#{$width} / 2));
+  }
+}
+
+@mixin fa($size, $dimensions) {
+  display: inline-block;
+  font-size: $size;
+  height: $dimensions;
+  line-height: $dimensions;
+  text-align: center;
+  vertical-align: top;
+  width: $dimensions;
+}
+
+@mixin hamburger($dimensions) {
+  cursor: pointer;
+  display: block;
+  height: $dimensions;
+  position: relative;
+  width: $dimensions;
+
+  span {
+    background-color: currentColor;
+    display: block;
+    height: 1px;
+    left: calc(50% - 8px);
+    position: absolute;
+    transform-origin: center;
+    transition-duration: $speed;
+    transition-property: background-color, opacity, transform;
+    transition-timing-function: $easing;
+    width: 16px;
+
+    &:nth-child(1) {
+      top: calc(50% - 6px);
+    }
+
+    &:nth-child(2) {
+      top: calc(50% - 1px);
+    }
+
+    &:nth-child(3) {
+      top: calc(50% + 4px);
+    }
+  }
+
+  &:hover {
+    background-color: rgba(black, 0.05);
+  }
+
+  // Modifers
+  &.is-active {
+    span {
+      &:nth-child(1) {
+        transform: translateY(5px) rotate(45deg);
+      }
+
+      &:nth-child(2) {
+        opacity: 0;
+      }
+
+      &:nth-child(3) {
+        transform: translateY(-5px) rotate(-45deg);
+      }
+    }
+  }
+}
+
+@mixin overflow-touch {
+  -webkit-overflow-scrolling: touch;
+}
+
+@mixin placeholder {
+  $placeholders: ":-moz" ":-webkit-input" "-moz" "-ms-input";
+
+  @each $placeholder in $placeholders {
+    &:#{$placeholder}-placeholder {
+      @content;
+    }
+  }
+}
+
+// Responsiveness
+
+@mixin from($device) {
+  @media screen and (min-width: $device) {
+    @content;
+  }
+}
+
+@mixin until($device) {
+  @media screen and (max-width: $device - 1px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media screen and (max-width: $tablet - 1px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media screen and (min-width: $tablet), print {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media screen and (min-width: $tablet) and (max-width: $desktop - 1px) {
+    @content;
+  }
+}
+
+@mixin touch {
+  @media screen and (max-width: $desktop - 1px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media screen and (min-width: $desktop) {
+    @content;
+  }
+}
+
+@mixin desktop-only {
+  @if $widescreen-enabled {
+    @media screen and (min-width: $desktop) and (max-width: $widescreen - 1px) {
+      @content;
+    }
+  }
+}
+
+@mixin until-widescreen {
+  @if $widescreen-enabled {
+    @media screen and (max-width: $widescreen - 1px) {
+      @content;
+    }
+  }
+}
+
+@mixin widescreen {
+  @if $widescreen-enabled {
+    @media screen and (min-width: $widescreen) {
+      @content;
+    }
+  }
+}
+
+@mixin widescreen-only {
+  @if $widescreen-enabled and $fullhd-enabled {
+    @media screen and (min-width: $widescreen) and (max-width: $fullhd - 1px) {
+      @content;
+    }
+  }
+}
+
+@mixin until-fullhd {
+  @if $fullhd-enabled {
+    @media screen and (max-width: $fullhd - 1px) {
+      @content;
+    }
+  }
+}
+
+@mixin fullhd {
+  @if $fullhd-enabled {
+    @media screen and (min-width: $fullhd) {
+      @content;
+    }
+  }
+}
+
+// Placeholders
+
+%unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@mixin unselectable {
+  @extend %unselectable;
+}
+
+%arrow {
+  border: 3px solid transparent;
+  border-radius: 2px;
+  border-right: 0;
+  border-top: 0;
+  content: " ";
+  display: block;
+  height: 0.625em;
+  margin-top: -0.4375em;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: rotate(-45deg);
+  transform-origin: center;
+  width: 0.625em;
+}
+
+@mixin arrow($color) {
+  @extend %arrow;
+
+  border-color: $color;
+}
+
+%block {
+  &:not(:last-child) {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@mixin block {
+  @extend %block;
+}
+
+%delete {
+  @extend %unselectable;
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-color: rgba($black, 0.2);
+  border: none;
+  border-radius: $radius-rounded;
+  cursor: pointer;
+  display: inline-block;
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 0;
+  height: 20px;
+  max-height: 20px;
+  max-width: 20px;
+  min-height: 20px;
+  min-width: 20px;
+  outline: none;
+  position: relative;
+  vertical-align: top;
+  width: 20px;
+
+  &::before,
+  &::after {
+    background-color: $white;
+    content: "";
+    display: block;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    transform-origin: center center;
+  }
+
+  &::before {
+    height: 2px;
+    width: 50%;
+  }
+
+  &::after {
+    height: 50%;
+    width: 2px;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: rgba($black, 0.3);
+  }
+
+  &:active {
+    background-color: rgba($black, 0.4);
+  }
+
+  // Sizes
+  &.is-small {
+    height: 16px;
+    max-height: 16px;
+    max-width: 16px;
+    min-height: 16px;
+    min-width: 16px;
+    width: 16px;
+  }
+
+  &.is-medium {
+    height: 24px;
+    max-height: 24px;
+    max-width: 24px;
+    min-height: 24px;
+    min-width: 24px;
+    width: 24px;
+  }
+
+  &.is-large {
+    height: 32px;
+    max-height: 32px;
+    max-width: 32px;
+    min-height: 32px;
+    min-width: 32px;
+    width: 32px;
+  }
+}
+
+@mixin delete {
+  @extend %delete;
+}
+
+%loader {
+  animation: spinAround 500ms infinite linear;
+  border: 2px solid $border;
+  border-radius: $radius-rounded;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  content: "";
+  display: block;
+  height: 1em;
+  position: relative;
+  width: 1em;
+}
+
+@mixin loader {
+  @extend %loader;
+}
+
+%overlay {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+@mixin overlay($offset: 0) {
+  @extend %overlay;
+
+  @if $offset != 0 {
+    bottom: $offset;
+    left: $offset;
+    right: $offset;
+    top: $offset;
+  }
+}
+
+

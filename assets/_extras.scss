@@ -1,0 +1,150 @@
+/*to-do-1*/
+
+.custom-color {
+  color: tomato;
+  font-weight: bold;
+  transition: 0.5s;
+  &:hover {
+    color: #000;
+  }
+}
+
+/*to-do-2*/
+
+@mixin customOrder($order) {
+  order: $order;
+}
+@mixin customFlex($flex, $direction) {
+  display: $flex;
+  flex-direction: $direction;
+}
+/*to-do-3*/
+.custom-video {
+  height: 315px;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+/*to-do-5*/
+.nested.dropdown {
+  &:hover > .dropdown-menu {
+    display: block;
+  }
+  .dropdown-menu {
+    top: -15px;
+    margin-left: 100%;
+  }
+  .dropdown-trigger {
+    button::after {
+      content: ">";
+    }
+    button {
+      padding: 0px 0px;
+      border: 0px;
+      font-size: 14px;
+      font-weight: 400;
+      height: 2em;
+    }
+    svg {
+      display: none;
+    }
+  }
+}
+
+/*to-do-6*/
+#overlay {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  z-index: 1000;
+  #popup {
+    max-width: 600px;
+    width: 80%;
+    max-height: 300px;
+    height: 80%;
+    padding: 20px;
+    position: relative;
+    background: #fff;
+    margin: 20px auto;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    top: 30%;
+  }
+}
+/*to-do-6*/
+
+/*to-do-7*/
+.custom-container {
+  display: flex;
+  align-items: center;
+  padding-bottom: 1.5rem;
+  align-items: center;
+  margin-right: 5px;
+  input {
+    height: 2.5rem;
+    border: 1px solid #e4e7eb;
+    border-radius: 2px;
+    outline: none;
+    margin-left: 2px;
+  }
+}
+/*to-do-9*/
+/*I know i shouldn't use !important but I didn't want to mess with the original code*/
+.faq-accordion {
+  height: 40vh;
+  a {
+    text-decoration: none !important;
+    color: white !important;
+    font-weight: bold;
+  }
+  p {
+    font-size: 1.1em;
+    margin: 1em 0;
+  }
+}
+
+ul {
+  list-style: none !important;
+  padding: 0;
+  .inner {
+    padding-left: 1em;
+    overflow: hidden;
+    display: none;
+    .show {
+      /*display: block;*/
+    }
+  }
+  li {
+    margin: 0.5em 0;
+    a.custom-toggle {
+      width: 100%;
+      display: block;
+      background: #1dd1a1;
+      color: white;
+      padding: 15px;
+      border-radius: 2px;
+      transition: 0.5s;
+      &:hover {
+        background: #10ac84;
+      }
+    }
+  }
+}
+
+/*to-do-10*/
+#todo10container {
+  overflow: auto;
+  word-wrap: break-word;
+  h2 {
+    font-weight: bold;
+    padding: 15px 0 5px 0;
+  }
+}

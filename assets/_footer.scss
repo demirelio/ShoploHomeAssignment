@@ -1,0 +1,145 @@
+%shb-footer-spacer {
+  position: relative;
+
+  &:before {
+    background: $color-athens-gray;
+    content: '';
+    display: block;
+    height: 1px;
+    left: 50%;
+    position: absolute;
+    top: 0;
+    width: calc(100% - 20px);
+
+    @include transform(translateX(-50%));
+  }
+}
+
+%footer-logo-base {
+  a {
+    color: $footer-logo-color;
+
+    &:hover {
+      color: $footer-logo-hover-color;
+    }
+  }
+}
+
+%footer-logo-light {
+  a {
+    color: $footer-logo-light-color;
+
+    &:hover {
+      color: $footer-logo-hover-light-color;
+    }
+  }
+}
+
+%footer-logo {
+  @extend %footer-logo-base;
+  font-size: $footer-logo-size;
+  font-weight: 700;
+
+  img {
+    $footer-logo-height: 60px;
+    display:block;
+    @if variable_exists(set__footer__logo__img__size) {
+      $footer-logo-height: calc(#{$set__footer__logo__img__size} * #{$footer-logo-height});
+    }
+
+    height: $footer-logo-height;
+    //max-width: 100%;
+  }
+}
+
+%footer-menu-label-base {
+  color: $footer-menu-label-color;
+}
+
+%footer-menu-label-light {
+  color: $footer-menu-label-light-color;
+}
+
+%footer-menu-label {
+  @extend %footer-menu-label-base;
+  font-size: $footer-menu-label-size;
+  font-weight: 600;
+  letter-spacing: .1px;
+  line-height: 25px;
+  margin: 10px 0 0;
+}
+
+%footer-menu-base {
+  a {
+    color: $footer-menu-links-color;
+
+    &:hover {
+      color: $footer-menu-links-hover-color;
+    }
+  }
+}
+
+%footer-menu-light {
+  a {
+    color: $footer-menu-links-light-color;
+
+    &:hover {
+      color: $footer-menu-links-hover-light-color;
+    }
+  }
+}
+
+%footer-menu {
+  @extend %clear-list;
+  @extend %footer-menu-base;
+
+  li {
+    letter-spacing: .1px;
+    line-height: 25px;
+  }
+
+  a {
+    font-size: $footer-menu-link;
+  }
+}
+
+%footer-menu-horizontal {
+  display: flex;
+  justify-content: center;
+
+  li {
+    line-height: 25px;
+    padding: 0 8px;
+  }
+}
+
+%copyright-base {
+  color: $footer-copyrights-color;
+
+  a {
+    color: $footer-copyrights-links-color;
+
+    &:hover {
+      color: $footer-copyrights-links-hover-color;
+    }
+  }
+}
+
+%copyright-light {
+  color: $footer-copyrights-light-color;
+
+  a {
+    color: $footer-copyrights-links-light-color;
+
+    &:hover {
+      color: $footer-copyrights-links-hover-light-color;
+    }
+  }
+}
+
+%footer-copyright {
+  @extend %copyright-base;
+  font-size: $footer-copyrights-size;
+  text-transform: uppercase;
+  line-height: 1.3;
+}

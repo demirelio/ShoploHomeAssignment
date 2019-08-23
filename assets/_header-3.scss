@@ -1,0 +1,56 @@
+.shb-header-3 {
+
+  &.is-sticky {
+    @extend %is-sticky;
+    background-color: $header-background;
+
+    .shb-header-top {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  .shb-header-top {
+    @extend %shb-header-top;
+  }
+
+  #logo {
+    @extend %shb-header-logo;
+  }
+
+  .shb-right-header {
+    @extend %shb-right-header;
+  }
+
+  .shb-cart-widget {
+    @extend %shb-cart-widget;
+  }
+
+  .shb-navbar-with-logo {
+    @extend %shb-navbar-with-logo;
+  }
+
+  .shb-navbar {
+    a {
+      color: $header-links-color;
+    }
+
+    #mobileNav {
+      @extend %shb-mobile-nav;
+    }
+
+    #mainNav {
+      .shb-nav-item {
+        @extend %shb-nav-item;
+
+        .shb-submenu {
+          background-color: $header-navbar-background;
+
+          a {
+            color: $header-navbar-links-color;
+          }
+        }
+      }
+    }
+  }
+}
